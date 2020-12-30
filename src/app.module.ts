@@ -4,6 +4,8 @@ import { ConfigModule } from '@nestjs/config';
 import { QuestionModule } from './db/question/question.module';
 import { AnswerModule } from './db/answer/answer.module';
 import { UserModule } from './db/user/user.module';
+import { DiscordModule } from './services/discord/discord.module';
+import { BotConfigModule } from './db/bot-config/bot-config.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -15,6 +17,8 @@ import configuration from './config/configuration';
     QuestionModule,
     AnswerModule,
     UserModule,
+    DiscordModule,
+    BotConfigModule,
   ],
 })
 export class AppModule {}
