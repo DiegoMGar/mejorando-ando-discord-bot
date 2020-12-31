@@ -71,7 +71,7 @@ export class DiscordService {
   }
 
   private async help(message: Message): Promise<void> {
-    await message.author.send('Hi, i am here to help you.');
+    await message.author.send('Hola, estoy aquí para ayudarte.');
   }
 
   private async manageAdminMessage(message: Message): Promise<void> {
