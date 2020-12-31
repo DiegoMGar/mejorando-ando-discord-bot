@@ -1,4 +1,4 @@
-import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 export type BotConfigDocument = BotConfig & Document;
@@ -7,6 +7,7 @@ export type BotConfigDocument = BotConfig & Document;
 export class BotConfig {
   @Prop() admins: string[]; // LIST OF ADMIN IDS
   @Prop() channels: string[]; // LIST OF CHANNELS LISTENING
+  @Prop() prefix: string; // "!<something>"
   @Prop() updatedAt: Date;
 }
 

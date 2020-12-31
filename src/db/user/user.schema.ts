@@ -5,9 +5,11 @@ export type UserDocument = User & Document;
 
 @Schema()
 export class User {
-  @Prop() discord: string; // DISCORD USER ID
+  @Prop({ index: true }) discord: string; // DISCORD USER ID
   @Prop() discordUsername: string;
-  @Prop() points: number;
+  @Prop() score: number;
+  @Prop() admin: boolean;
+  @Prop() adminRange: number;
   @Prop() createdAt: Date;
 }
 

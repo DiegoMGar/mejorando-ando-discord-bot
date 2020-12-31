@@ -1,5 +1,5 @@
 import { Connection } from 'mongoose';
-import {BotConfigSchema} from './bot-config.schema';
+import { BotConfigSchema } from './bot-config.schema';
 
 export const botConfigProviders = [
   {

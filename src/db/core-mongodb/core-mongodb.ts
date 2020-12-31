@@ -15,17 +15,11 @@ export class CoreMongodbService<Z, T extends Document> {
   }
 
   findAll(): Promise<T[]> {
-    return this.model
-      .find()
-      .select(this.defaultProjection)
-      .exec();
+    return this.model.find().select(this.defaultProjection).exec();
   }
 
   findOne(id: string): Promise<T> {
-    return this.model
-      .findById(id)
-      .select(this.defaultProjection)
-      .exec();
+    return this.model.findById(id).select(this.defaultProjection).exec();
   }
 
   find(conditions: { [index: string]: any }): Promise<T[]> {

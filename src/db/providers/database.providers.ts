@@ -8,11 +8,12 @@ export const databaseProviders = [
     provide: 'DATABASE_CONNECTION',
     useFactory: (
       config: ConfigService<AppConfiguration>,
-    ): Promise<typeof mongoose> => mongoose.connect(config.get('MONGODB_URL'), {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      autoIndex: true,
-      useCreateIndex: true,
-    }),
+    ): Promise<typeof mongoose> =>
+      mongoose.connect(config.get('MONGODB_URL'), {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        autoIndex: true,
+        useCreateIndex: true,
+      }),
   },
 ];

@@ -1,4 +1,4 @@
-import {Inject, Injectable} from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CoreMongodbService } from '../core-mongodb/core-mongodb';
 import { User, UserDocument } from './user.schema';
 import { Model } from 'mongoose';

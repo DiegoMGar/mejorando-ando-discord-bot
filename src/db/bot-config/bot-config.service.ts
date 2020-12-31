@@ -16,6 +16,7 @@ export class BotConfigService extends CoreMongodbService<
     return this.insert({
       admins: [],
       channels: [],
+      prefix: '!',
       updatedAt: new Date(),
     });
   }
