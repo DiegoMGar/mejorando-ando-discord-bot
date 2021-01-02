@@ -74,12 +74,10 @@ export class DiscordService {
     await message.author.send('Hola, estoy aquí para ayudarte.');
   }
 
-  private async manageAdminMessage(message: Message): Promise<void> {
-    if (!this.listeningChannel(message.channel.id)) return;
-    if (!this.messageFromAdmin(message.author.id)) return;
-    if (!message.content) return;
-    const commands: string[] = this.extractCommands(message);
-    if (commands.length < 1) return;
+  private async manageAdminMessage(
+    message: Message,
+    commands: string[],
+  ): Promise<void> {
     switch (`${commands[0]}` as BotCommands) {
       case BotCommands.ANSWER:
         break;
@@ -95,11 +93,10 @@ export class DiscordService {
     }
   }
 
-  private async manageMessage(message: Message): Promise<void> {
-    if (!this.listeningChannel(message.channel.id)) return;
-    if (!message.content) return;
-    const commands: string[] = this.extractCommands(message);
-    if (commands.length < 1) return;
+  private async manageMessage(
+    message: Message,
+    commands: string[],
+  ): Promise<void> {
     switch (`${commands[0]}` as BotCommands) {
       case BotCommands.HELP:
         await this.help(message);
@@ -109,17 +106,22 @@ export class DiscordService {
 
   private onMessage(): void {
     this.client.on('message', async (message: Message) => {
-      await this.superAdminDebug(message);
-      await this.manageAdminMessage(message);
-      await this.manageMessage(message);
+      if (!message.content) return;
+      if (message.content.startsWith(BotCommands.PING)) {
+        await this.superAdminDebug(message);
+        return;
+      }
+      const commands: string[] = this.extractCommands(message);
+      if (commands.length < 1) return;
+      if (!this.listeningChannel(message.channel.id)) return;
+      const admin = this.messageFromAdmin(message.author.id);
+      if (admin) await this.manageAdminMessage(message, commands);
+      else await this.manageMessage(message, commands);
     });
   }
 
   private async superAdminDebug(message: Message): Promise<void> {
-    if (
-      message.content.startsWith(BotCommands.PING) &&
-      message.author.id === this.config.get('DISCORD_SUPERADMIN_ID')
-    ) {
+    if (message.author.id === this.config.get('DISCORD_SUPERADMIN_ID')) {
       await message.channel.send(`PONG: id del canal:[${message.channel.id}].`);
       if (this.configDocument.channels.includes(message.channel.id)) {
         await message.channel.send(
@@ -143,8 +145,12 @@ export class DiscordService {
   }
 
   private extractCommands(message: Message): string[] {
-    const commands: string[] = message.content.toLowerCase().split(' ');
-    if (!commands[0].startsWith(this.configDocument.prefix)) return [];
+    if (!message.content.startsWith(this.configDocument.prefix)) return [];
+    const cleanedText = message.content
+      .trimEnd()
+      .toLowerCase()
+      .replace(/\s+/g, ' ');
+    const commands: string[] = cleanedText.split(' ');
     commands[0] = commands[0].replace(this.configDocument.prefix, '');
     return commands;
   }
